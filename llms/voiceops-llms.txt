@@ -1,0 +1,22 @@
+# VoiceOps
+
+> VoiceOps (voiceops.com) is an AI agent platform that analyzes customer conversations — calls, email, SMS, and chat — and turns them into structured business intelligence: transcription and analysis across 120+ languages, CRM enrichment, lead scoring, compliance monitoring, competitive intelligence, and churn detection for high-velocity sales, CX, and operations teams. Backed by Bain Capital Ventures. VoiceOps pipes structured conversation records into tools like Salesforce, HubSpot, Genesys, Five9, Snowflake, Power BI, Slack, Microsoft Teams, and outbound webhooks.
+
+VoiceOps does not currently publish a public developer portal or API reference. A Freshdesk knowledge base (voiceopsassist.freshdesk.com) previously documented a Call Integration API and a Reporting API but now returns 404. A live API host exists at api.voiceops.com serving the app.voiceops.com application; integration access is arranged with the vendor.
+
+## Company
+
+- [Website](https://voiceops.com/): Product overview and customer stories
+- [News](https://voiceops.com/news): Company news and announcements
+- [Contact](https://voiceops.com/contact): Sales and support contact
+- [Careers](https://voiceops.com/careers): Open roles
+
+## Trust and Legal
+
+- [Trust Center](https://trust.voiceops.com/): Vanta-hosted trust center with compliance artifacts and controls
+- [Privacy Policy](https://voiceops.com/privacy-policy)
+- [Terms of Service](https://voiceops.com/voiceops-site-terms)
+
+## API Evangelist Profile
+
+- [apis.yml](https://raw.githubusercontent.com/api-evangelist/voiceops/refs/heads/main/apis.yml): APIs.json profile for VoiceOps

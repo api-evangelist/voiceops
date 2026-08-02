@@ -1,9 +1,29 @@
 aid: voiceops
 name: VoiceOps
-description: 'VoiceOps is a company surfaced as a portfolio company of bain-capital-ventures and added
-  to the API Evangelist network as a stub for enrichment. Sector: ai-apps. This profile is a lead awaiting
-  the enrichment pipeline.'
+description: >-
+  VoiceOps is an AI agent platform that analyzes customer conversations across
+  calls, email, SMS, and chat and turns them into structured business
+  intelligence — transcription and analysis in 120+ languages, CRM enrichment,
+  lead scoring, compliance monitoring, competitive intelligence, and churn
+  detection for high-velocity sales, CX, and operations teams. It pipes
+  structured conversation records into Salesforce, HubSpot, Genesys, Five9,
+  Snowflake, Power BI, Slack, Teams, and webhooks. Backed by Bain Capital
+  Ventures. No public developer portal is currently published; a previously
+  documented Call Integration API and Reporting API knowledge base is offline,
+  and the live api.voiceops.com host backs the app.voiceops.com application.
 url: https://raw.githubusercontent.com/api-evangelist/voiceops/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://cdn.prod.website-files.com/677e212e69df600d0a08b485/678abf9aa13aa718ca1f779f_voiceops_favicon.png
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
@@ -12,10 +32,15 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
 - Ai Apps
+- Conversation Intelligence
+- Call Centers
+- Sales Coaching
+- Customer Experience
+- Artificial Intelligence
 apis: []
 maintainers:
 - FN: Kin Lane
@@ -25,3 +50,22 @@ maintainers:
 common:
 - type: Website
   url: https://voiceops.com/
+- type: Blog
+  url: https://voiceops.com/news
+- type: Support
+  url: https://voiceops.com/contact
+- type: TermsOfService
+  url: https://voiceops.com/voiceops-site-terms
+- type: PrivacyPolicy
+  url: https://voiceops.com/privacy-policy
+- type: TrustCenter
+  url: security/voiceops-trust-center.yml
+- type: DomainSecurity
+  url: security/voiceops-domain-security.yml
+- type: LLMsTxt
+  url: llms/voiceops-llms.txt
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 4
+  pass: local-v1

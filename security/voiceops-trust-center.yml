@@ -1,0 +1,18 @@
+generated: '2026-07-21'
+method: searched
+probe: true
+url: https://trust.voiceops.com/
+platform: vanta
+certifications: []
+notes: >-
+  Verified live (HTTP 200) Vanta-hosted trust center titled "Voiceops Trust
+  Center". The page invites visitors to "explore compliance artifacts, request
+  documentation, and view key details about our controls and standards", but
+  the framework/certification list is rendered client-side behind Vanta's
+  signed GraphQL queries and could not be extracted without a browser, so no
+  named certifications are recorded here. Do not confuse with voiceops.io
+  (a different company that advertises SOC 2/HIPAA).
+evidence:
+  - source: https://trust.voiceops.com/
+    kind: trust-center
+    detail: 'HTTP 200; Vanta trust-report app (assets.vanta.com bundle, slugid g5bubu9n88g5aq1mcqumiv); meta description confirms compliance artifacts and controls'
