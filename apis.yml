@@ -8,21 +8,27 @@ description: >-
   detection for high-velocity sales, CX, and operations teams. It pipes
   structured conversation records into Salesforce, HubSpot, Genesys, Five9,
   Snowflake, Power BI, Slack, Teams, and webhooks. Backed by Bain Capital
-  Ventures. No public developer portal is currently published; a previously
-  documented Call Integration API and Reporting API knowledge base is offline,
-  and the live api.voiceops.com host backs the app.voiceops.com application.
+  Ventures. VoiceOps operates a live first-party remote MCP server at
+  mcp.voiceops.com authenticated with an API key, but publishes no developer
+  portal, API reference, OpenAPI, or SDK of any kind — the MCP endpoint is
+  reachable by an agent today yet discoverable by none, and there is no
+  published way to obtain the key it requires. A previously documented Call
+  Integration API and Reporting API knowledge base is offline, and the live
+  api.voiceops.com host backs the app.voiceops.com application.
 url: https://raw.githubusercontent.com/api-evangelist/voiceops/refs/heads/main/apis.yml
 accessModel:
-  pricing: unknown
-  onboarding: unknown
+  pricing: sales-led
+  onboarding: demo-request
   trial: false
   try_now: false
   public: false
-  label: Unknown
-  confidence: low
-  source: []
-  generated: '2026-07-22'
-  method: derived
+  label: Sales-led
+  confidence: high
+  source:
+  - https://www.voiceops.com/schedule-a-demo
+  - https://www.voiceops.com/sitemap.xml
+  generated: '2026-08-14'
+  method: searched
 image: https://cdn.prod.website-files.com/677e212e69df600d0a08b485/678abf9aa13aa718ca1f779f_voiceops_favicon.png
 x-type: company
 x-source: vc-portfolio
@@ -32,7 +38,7 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-21'
+modified: '2026-08-14'
 tags:
 - Company
 - Ai Apps
@@ -41,7 +47,29 @@ tags:
 - Sales Coaching
 - Customer Experience
 - Artificial Intelligence
-apis: []
+- Speech Analytics
+- Model Context Protocol
+- Agents
+apis:
+- name: VoiceOps MCP Server
+  description: >-
+    Live first-party remote Model Context Protocol server operated by VoiceOps.
+    JSON-RPC 2.0 over HTTP (streamable HTTP transport), authenticated with a
+    VoiceOps API key sent in the Authorization header. tools/list is auth-gated,
+    so the tool set is not recorded. The server is undocumented — it appears on
+    no VoiceOps page, in no sitemap, and in no MCP registry — and was found by
+    direct host probing. Host ownership is confirmed by a single Amazon-issued
+    TLS certificate covering mcp.voiceops.com, api.voiceops.com and
+    app.voiceops.com.
+  humanURL: https://www.voiceops.com/
+  baseURL: https://mcp.voiceops.com/mcp
+  tags:
+  - Model Context Protocol
+  - Agents
+  - Conversation Intelligence
+  properties:
+  - type: MCPServer
+    url: mcp/voiceops-mcp.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -49,23 +77,53 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://voiceops.com/
+  url: https://www.voiceops.com/
 - type: Blog
-  url: https://voiceops.com/news
+  url: https://www.voiceops.com/news
 - type: Support
-  url: https://voiceops.com/contact
+  url: https://www.voiceops.com/contact
+- type: Login
+  url: https://app.voiceops.com/
 - type: TermsOfService
-  url: https://voiceops.com/voiceops-site-terms
+  url: https://www.voiceops.com/voiceops-site-terms
 - type: PrivacyPolicy
-  url: https://voiceops.com/privacy-policy
+  url: https://www.voiceops.com/privacy-policy
+- type: MCPServer
+  url: mcp/voiceops-mcp.yml
+- type: Authentication
+  url: authentication/voiceops-authentication.yml
+- type: OAuthScopes
+  url: scopes/voiceops-scopes.yml
+- type: WellKnown
+  url: well-known/voiceops-well-known.yml
+- type: SecurityTxt
+  url: https://app.voiceops.com/.well-known/security.txt
+- type: Security
+  url: https://app.voiceops.com/.well-known/security.txt
+- type: VulnerabilityDisclosure
+  url: security/voiceops-vulnerability-disclosure.yml
 - type: TrustCenter
-  url: security/voiceops-trust-center.yml
+  url: https://trust.voiceops.com/
+- type: Compliance
+  url: https://trust.voiceops.com/
+- type: Conformance
+  url: conformance/voiceops-conformance.yml
 - type: DomainSecurity
   url: security/voiceops-domain-security.yml
+- type: ErrorCatalog
+  url: errors/voiceops-problem-types.yml
+- type: Conventions
+  url: conventions/voiceops-conventions.yml
+- type: Lifecycle
+  url: lifecycle/voiceops-lifecycle.yml
+- type: RateLimits
+  url: rate-limits/voiceops-rate-limits.yml
+- type: Plans
+  url: plans/voiceops-plans-pricing.yml
 - type: LLMsTxt
   url: llms/voiceops-llms.txt
 x-enrichment:
-  date: '2026-07-21'
+  date: '2026-08-14'
   status: enriched
-  artifacts_added: 4
+  artifacts_added: 14
   pass: local-v1
