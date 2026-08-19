@@ -1,0 +1,49 @@
+generated: '2026-08-14'
+method: probed
+source: >-
+  live probes of voiceops.com paths plus https://www.voiceops.com/sitemap.xml
+versioning:
+  scheme: none-observed
+  current: null
+  docs: null
+  detail: >-
+    Neither surface carries a version. /v1, /api/v1 and /v1/mcp return 404 on
+    their respective hosts, and no version header is returned on any response.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  detail: >-
+    No deprecation policy is published and no Deprecation or Sunset (RFC 8594)
+    header was observed on any response. No Deprecation pointer is emitted.
+sla:
+  url: null
+  uptime_target: null
+status_page:
+  url: null
+  detail: >-
+    No status page. https://www.voiceops.com/status returns 404, no status
+    subdomain resolves, and no statuspage.io / status.io / instatus page for
+    VoiceOps was found. No StatusPage pointer is emitted. The MCP server does
+    expose an unauthenticated liveness endpoint at
+    https://mcp.voiceops.com/health returning {"status":"ok"}, which is a health
+    check, not a status page.
+changelog:
+  url: null
+  detail: >-
+    No changelog. https://www.voiceops.com/changelog returns 404. The nearest
+    thing is the company news feed at https://www.voiceops.com/news (4 posts in
+    the sitemap), which is announcements, not release notes.
+deprecated_operations: []
+history:
+  - date: '2026-07-21'
+    event: >-
+      Round 1 enrichment recorded a previously documented Call Integration API
+      and Reporting API on a Freshdesk knowledge base at
+      voiceopsassist.freshdesk.com. Re-probed 2026-08-14: /support/home and
+      /support/solutions both return HTTP 404. That documentation surface is
+      gone and has not been replaced.
+  - date: '2026-08-13'
+    event: >-
+      app.voiceops.com/.well-known/security.txt last-modified — the first
+      /.well-known/ document VoiceOps has served, published one day before this
+      round.

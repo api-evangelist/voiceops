@@ -1,0 +1,4 @@
+Contact: mailto://engineering@voiceops.com
+Expires: 2028-03-01T07:01:00.000Z
+Preferred-Languages: en
+Canonical: https://app.voiceops.com/.well-known/security.txt

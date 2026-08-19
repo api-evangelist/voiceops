@@ -1,0 +1,72 @@
+generated: '2026-08-14'
+method: probed
+source: >-
+  live anonymous probes of mcp.voiceops.com, api.voiceops.com,
+  app.voiceops.com and clerk.voiceops.com
+docs: null
+docs_note: >-
+  VoiceOps publishes no API documentation, so none of these conventions are
+  stated by the provider. Everything recorded here was observed on the wire from
+  outside, and anything that could only be seen behind authentication is
+  recorded as unknown rather than guessed.
+authentication:
+  style: api-key-in-authorization-header
+  detail: >-
+    The MCP server requires an Authorization header carrying a VoiceOps API key.
+    Application sign-in is OIDC via clerk.voiceops.com. See
+    authentication/voiceops-authentication.yml.
+idempotency:
+  supported: unknown
+  header: null
+  detail: >-
+    No idempotency contract is documented and none could be observed
+    anonymously. NOT recorded as supported, and no Idempotency pointer is
+    emitted for this provider.
+pagination:
+  style: unknown
+  detail: Not observable without credentials and not documented.
+versioning:
+  scheme: none-observed
+  detail: >-
+    No version segment appears in either surface's path. /v1, /api/v1 and
+    /v1/mcp all return 404. No version header is returned on any response.
+error_envelope:
+  detail: >-
+    Two different envelopes — Hapi/Boom on api.voiceops.com and JSON-RPC 2.0 on
+    mcp.voiceops.com. See errors/voiceops-problem-types.yml.
+rate_limit_signaling:
+  headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
+  detail: >-
+    The MCP server declares these three headers in
+    Access-Control-Expose-Headers, which means it intends browser clients to read
+    them, so rate limiting is implemented. The values are not returned on
+    anonymous 401/health responses and no numbers are published. See
+    rate-limits/voiceops-rate-limits.yml.
+request_tracing:
+  header: null
+  detail: >-
+    No request-id or correlation-id header is returned on any response from
+    either host. A consumer has nothing to quote back to support on a failure.
+session:
+  header: Mcp-Session-Id
+  detail: >-
+    The MCP server advertises Mcp-Session-Id in both
+    Access-Control-Allow-Headers and Access-Control-Expose-Headers, indicating
+    the MCP streamable-HTTP session model with a server-assigned session id.
+cors:
+  detail: >-
+    The MCP server sends Access-Control-Allow-Origin: * with methods
+    GET, POST, DELETE, OPTIONS — it is designed to be called directly from a
+    browser. api.voiceops.com sends no CORS headers on anonymous responses.
+transport_security:
+  detail: >-
+    HSTS on all hosts; app.voiceops.com additionally ships a strict
+    Content-Security-Policy, X-Frame-Options: SAMEORIGIN, and a Permissions-Policy
+    that denies camera/geolocation/payment/usb and allows microphone to self.
+cross_links:
+  errors: errors/voiceops-problem-types.yml
+  authentication: authentication/voiceops-authentication.yml
+  scopes: scopes/voiceops-scopes.yml
+  rate_limits: rate-limits/voiceops-rate-limits.yml
+  lifecycle: lifecycle/voiceops-lifecycle.yml
+  mcp: mcp/voiceops-mcp.yml

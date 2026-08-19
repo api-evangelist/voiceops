@@ -1,0 +1,35 @@
+generated: '2026-08-14'
+method: probed
+source: https://mcp.voiceops.com/mcp
+limit_count: 0
+limit_count_note: >-
+  Zero published numeric limits. VoiceOps documents no rate limits anywhere —
+  there is no developer portal or API reference to document them in. What IS
+  established is that rate limiting exists and which headers carry the runtime
+  signal, observed directly on the wire.
+rate_limits: []
+headers:
+  - name: X-RateLimit-Limit
+    surface: https://mcp.voiceops.com/mcp
+    evidence: Access-Control-Expose-Headers on every response from the MCP host
+  - name: X-RateLimit-Remaining
+    surface: https://mcp.voiceops.com/mcp
+    evidence: Access-Control-Expose-Headers on every response from the MCP host
+  - name: X-RateLimit-Reset
+    surface: https://mcp.voiceops.com/mcp
+    evidence: Access-Control-Expose-Headers on every response from the MCP host
+headers_note: >-
+  The server explicitly exposes these three headers to browser clients via CORS,
+  which is only worth doing if it emits them. They were not present on the
+  anonymous 401 or on /health, so the actual values are visible only to an
+  authenticated caller. The legacy X-RateLimit-* naming is used, not the
+  standard RateLimit / RateLimit-Policy fields.
+exhaustion_status: unknown
+exhaustion_note: >-
+  Not observable without a valid API key. No Retry-After header was seen on any
+  anonymous response.
+surfaces_without_limits:
+  - surface: https://api.voiceops.com
+    note: >-
+      No rate-limit headers of any kind on anonymous responses; every path
+      returns a bare Hapi/Boom 404.

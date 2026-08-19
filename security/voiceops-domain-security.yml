@@ -1,13 +1,54 @@
-generated: '2026-07-21'
+generated: '2026-08-14'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
-- host: voiceops.com
+- host: www.voiceops.com
   https: true
   tls_version: TLSv1.3
-  cert_expires: Oct 14 11:04:31 2026 GMT
+  cert_expires: Oct 14 16:53:26 2026 GMT
   hsts: true
   hsts_max_age: 31536000
+- host: mcp.voiceops.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Jan 25 23:59:59 2027 GMT
+  hsts: null
+- host: app.voiceops.com
+  https: true
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_include_subdomains: true
+  csp: true
+  x_frame_options: SAMEORIGIN
+  source: manual probe (not an apis.yml baseURL host)
+- host: api.voiceops.com
+  https: true
+  hsts: true
+  hsts_max_age: 15768000
+  x_frame_options: DENY
+  source: manual probe (not an apis.yml baseURL host)
+certificate:
+  issuer: C=US, O=Amazon, CN=Amazon RSA 2048 M01
+  subject: CN=projectfrontline.net
+  not_before: Jul 12 00:00:00 2026 GMT
+  not_after: Jan 25 23:59:59 2027 GMT
+  subject_alt_names:
+  - projectfrontline.net
+  - '*.projectfrontline.net'
+  - app.voiceops.com
+  - '*.app.voiceops.com'
+  - api.voiceops.com
+  - mcp.voiceops.com
+  note: >-
+    One certificate fronts the application, API and MCP hosts. This is the
+    ownership evidence used throughout this profile.
+findings:
+- >-
+  mcp.voiceops.com — the company's only public programmatic surface — returns no
+  Strict-Transport-Security header, while the marketing site, application and
+  API host all do.
+- No CAA records and no DNSSEC on voiceops.com.
+- DMARC policy is p=quarantine rather than p=reject.
 domains:
 - domain: voiceops.com
   dnssec: false

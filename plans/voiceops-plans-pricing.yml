@@ -1,0 +1,33 @@
+generated: '2026-08-14'
+method: searched
+source: https://www.voiceops.com/sitemap.xml
+plan_count: 0
+plan_count_note: >-
+  VoiceOps publishes no plans, no tiers, and no prices. There is no pricing page
+  at all — https://www.voiceops.com/pricing and /plans both return HTTP 404, and
+  the site's own sitemap.xml lists only 14 URLs, none of them commercial
+  (home, news, careers, contact, email, schedule-a-demo, and the legal pages).
+  Sales is entirely demo-led through https://www.voiceops.com/schedule-a-demo.
+  No API-specific or usage-based pricing exists for the MCP server.
+plans: []
+access_model:
+  pricing: sales-led
+  self_serve: false
+  free_tier: false
+  trial: false
+  public_signup: false
+  detail: >-
+    The only conversion path on the site is a demo request form. There is no
+    developer signup, no API key self-issuance, and no published quota or
+    overage model.
+evidence:
+  - url: https://www.voiceops.com/pricing
+    status: 404
+  - url: https://www.voiceops.com/plans
+    status: 404
+  - url: https://www.voiceops.com/sitemap.xml
+    status: 200
+    detail: 14 URLs, no pricing page among them
+  - url: https://www.voiceops.com/schedule-a-demo
+    status: 200
+    detail: Demo request form — the only commercial entry point

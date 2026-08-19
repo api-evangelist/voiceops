@@ -1,0 +1,72 @@
+generated: '2026-08-14'
+method: probed
+source: >-
+  live anonymous responses from https://api.voiceops.com/ and
+  https://mcp.voiceops.com/mcp
+format: vendor
+format_note: >-
+  Not RFC 9457. Two distinct, unrelated error envelopes are in use across the
+  two VoiceOps surfaces, and neither is documented anywhere public. Everything
+  below was observed on a live anonymous request; nothing is derived from a
+  specification, because VoiceOps publishes none.
+envelopes:
+  - id: hapi-boom
+    applies_to: https://api.voiceops.com
+    content_type: application/json; charset=utf-8
+    shape:
+      statusCode: integer
+      error: string
+      message: string
+    note: >-
+      The Hapi/Boom error format, which identifies the server framework. No
+      machine-readable error code, no type URI, no request id is returned.
+  - id: jsonrpc
+    applies_to: https://mcp.voiceops.com/mcp
+    content_type: application/json
+    shape:
+      jsonrpc: '2.0'
+      id: 'null on auth failure'
+      error: {code: integer, message: string}
+    note: >-
+      JSON-RPC 2.0 errors. Auth failures use the implementation-defined server
+      error code -32000 rather than an HTTP-transport-level challenge, though the
+      HTTP status is also 401.
+problems:
+  - surface: https://api.voiceops.com
+    status: 404
+    code: null
+    title: Not Found
+    body: '{"statusCode":404,"error":"Not Found","message":"Not Found"}'
+    observed_on: >-
+      /, /openapi.json, /openapi.yaml, /swagger.json, /v1/openapi.json,
+      /api-docs, /docs, /redoc, /graphql, /health, /healthz, /v1, /api, /trpc,
+      /api/v1, /status, /version, /metrics
+    note: >-
+      Every anonymous path probed returns the same 404. The host never issues a
+      401, so no authenticated surface is discoverable from outside.
+  - surface: https://mcp.voiceops.com/mcp
+    status: 401
+    code: -32000
+    title: Missing Authorization header
+    body: '{"jsonrpc":"2.0","id":null,"error":{"code":-32000,"message":"Missing Authorization header"}}'
+    remediation: Send an Authorization header carrying a VoiceOps API key.
+  - surface: https://mcp.voiceops.com/mcp
+    status: 401
+    code: -32000
+    title: Invalid or unknown API key
+    body: '{"jsonrpc":"2.0","id":null,"error":{"code":-32000,"message":"Invalid or unknown API key"}}'
+    remediation: >-
+      Obtain a valid key from VoiceOps. There is no published key issuance flow.
+  - surface: https://mcp.voiceops.com
+    status: 404
+    code: null
+    title: Not found
+    body: 'Not found'
+    content_type: text/plain
+    observed_on: '/, /sse, /message, /v1/mcp, /api/mcp, /.well-known/*'
+gaps:
+  - No public error reference of any kind.
+  - No stable machine-readable error codes on the REST surface (message text only).
+  - No request/correlation id header returned on any error response, so a
+    consumer cannot cite a failure back to support.
+  - The two surfaces do not share an error contract.

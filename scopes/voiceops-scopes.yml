@@ -1,0 +1,49 @@
+generated: '2026-08-14'
+method: probed
+source: https://clerk.voiceops.com/.well-known/oauth-authorization-server
+docs: https://clerk.com/docs/oauth/scoped-access
+docs_note: >-
+  The service_documentation URL in the authorization-server metadata points at
+  Clerk's own documentation, not at a VoiceOps-authored scope reference —
+  VoiceOps publishes none.
+scope_source_caveat: >-
+  IMPORTANT: these are the scopes advertised by the OpenID Connect / OAuth 2.0
+  provider that signs users in to the VoiceOps application
+  (clerk.voiceops.com, issuer https://clerk.voiceops.com, CNAME to
+  frontend-api.clerk.services). They are Clerk's platform scoped-access
+  vocabulary. They are NOT scopes on a VoiceOps business API, and they do NOT
+  govern the remote MCP server at mcp.voiceops.com, which uses an API key with
+  no scope surface at all.
+schemes:
+  - name: clerkOAuth2
+    source: well-known/voiceops-oauth-authorization-server.json
+    issuer: https://clerk.voiceops.com
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://clerk.voiceops.com/oauth/authorize
+        tokenUrl: https://clerk.voiceops.com/oauth/token
+scopes:
+  - scope: openid
+    description: Issue an OpenID Connect ID token for the signed-in user.
+    flows: [authorizationCode]
+    sources: [well-known/voiceops-oauth-authorization-server.json]
+  - scope: profile
+    description: Basic profile claims (name, given_name, family_name, picture, preferred_username).
+    flows: [authorizationCode]
+    sources: [well-known/voiceops-oauth-authorization-server.json]
+  - scope: email
+    description: Email address and email_verified claim.
+    flows: [authorizationCode]
+    sources: [well-known/voiceops-oauth-authorization-server.json]
+  - scope: public_metadata
+    description: Read the user's public metadata held by the identity provider.
+    flows: [authorizationCode]
+    sources: [well-known/voiceops-oauth-authorization-server.json]
+  - scope: private_metadata
+    description: Read the user's private metadata held by the identity provider.
+    flows: [authorizationCode]
+    sources: [well-known/voiceops-oauth-authorization-server.json]
+  - scope: offline_access
+    description: Issue a refresh token so the client can act without the user present.
+    flows: [authorizationCode]
+    sources: [well-known/voiceops-oauth-authorization-server.json]

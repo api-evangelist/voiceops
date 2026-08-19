@@ -1,18 +1,39 @@
-generated: '2026-07-21'
+generated: '2026-08-14'
 method: searched
 probe: true
 url: https://trust.voiceops.com/
 platform: vanta
-certifications: []
+certifications:
+  - SOC 2
+  - HIPAA
+  - PCI DSS
+certifications_source: >-
+  Named on the VoiceOps homepage (https://www.voiceops.com/), in the data
+  section: "Your data stays yours. SOC 2 · HIPAA · PCI DSS. We never use it to
+  train AI." These are the company's own published claims. They were NOT read
+  off the trust center itself — see notes — and no certificate, audit report,
+  attestation letter or report date is publicly downloadable, so the level
+  (e.g. SOC 2 Type I vs Type II) and the audit window are unknown.
 notes: >-
   Verified live (HTTP 200) Vanta-hosted trust center titled "Voiceops Trust
-  Center". The page invites visitors to "explore compliance artifacts, request
-  documentation, and view key details about our controls and standards", but
-  the framework/certification list is rendered client-side behind Vanta's
-  signed GraphQL queries and could not be extracted without a browser, so no
-  named certifications are recorded here. Do not confuse with voiceops.io
-  (a different company that advertises SOC 2/HIPAA).
+  Center" (slugid g5bubu9n88g5aq1mcqumiv), with a /controls sub-page. The
+  framework and control lists are rendered client-side behind Vanta's signed
+  queries and still could not be extracted without a browser on this round, so
+  the certification list above is taken from the homepage rather than the trust
+  center. Note also that every /.well-known/* path on trust.voiceops.com returns
+  HTTP 200 with the Vanta SPA HTML shell; that is a catch-all, not a served
+  document, and is explicitly not counted anywhere in this profile. Do not
+  confuse this company with voiceops.io, a different company.
 evidence:
   - source: https://trust.voiceops.com/
     kind: trust-center
-    detail: 'HTTP 200; Vanta trust-report app (assets.vanta.com bundle, slugid g5bubu9n88g5aq1mcqumiv); meta description confirms compliance artifacts and controls'
+    http_status: 200
+    detail: 'Vanta trust-report app (assets.vanta.com bundle, slugid g5bubu9n88g5aq1mcqumiv); meta description confirms compliance artifacts and controls'
+  - source: https://trust.voiceops.com/controls
+    kind: trust-center-controls
+    http_status: 200
+    detail: 'Controls page reachable; body is client-side rendered and yielded only the page title to a non-browser fetch'
+  - source: https://www.voiceops.com/
+    kind: homepage-compliance-claim
+    http_status: 200
+    detail: 'Homepage text: "Your data stays yours. SOC 2 · HIPAA · PCI DSS. We never use it to train AI."'

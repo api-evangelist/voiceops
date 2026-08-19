@@ -1,0 +1,101 @@
+generated: '2026-08-14'
+method: probed
+source: >-
+  live probes of mcp.voiceops.com, clerk.voiceops.com, app.voiceops.com,
+  api.voiceops.com plus published claims on voiceops.com
+standards:
+  - id: mcp
+    name: Model Context Protocol
+    conforms: true
+    evidence: >-
+      Live remote MCP server at https://mcp.voiceops.com/mcp answering JSON-RPC
+      2.0 over HTTP, advertising the Mcp-Session-Id header in CORS
+      allow/expose-headers. Protocol version could not be confirmed because
+      initialize is auth-gated.
+  - id: mcp-oauth-protected-resource
+    name: MCP OAuth authorization discovery (RFC 9728 / MCP auth spec)
+    conforms: false
+    evidence: >-
+      /.well-known/oauth-protected-resource returns 404 on mcp.voiceops.com and
+      no WWW-Authenticate header is issued on the 401, so an MCP client cannot
+      discover the authorization server. Auth is a bare API key.
+  - id: oauth2
+    name: OAuth 2.0
+    conforms: true
+    evidence: >-
+      RFC 8414 authorization-server metadata served at
+      https://clerk.voiceops.com/.well-known/oauth-authorization-server
+      (authorization_code + refresh_token grants, PKCE S256). Scope of
+      applicability is application sign-in, not a public developer API.
+  - id: rfc8414
+    name: OAuth 2.0 Authorization Server Metadata
+    conforms: true
+    evidence: well-known/voiceops-oauth-authorization-server.json (HTTP 200)
+  - id: oidc
+    name: OpenID Connect Discovery 1.0
+    conforms: true
+    evidence: >-
+      well-known/voiceops-openid-configuration.json (HTTP 200); issuer
+      https://clerk.voiceops.com, RS256 id_token signing, jwks_uri served.
+  - id: rfc9116
+    name: security.txt
+    conforms: partial
+    evidence: >-
+      Served at https://app.voiceops.com/.well-known/security.txt but not on the
+      primary domain, and the Contact field uses the non-standard "mailto://"
+      form. See security/voiceops-vulnerability-disclosure.yml.
+  - id: openapi
+    name: OpenAPI
+    conforms: false
+    evidence: >-
+      No OpenAPI/Swagger document found. /openapi.json, /openapi.yaml,
+      /swagger.json, /v1/openapi.json, /api-docs, /docs and /redoc all 404 on
+      api.voiceops.com and on mcp.voiceops.com; voiceops.com serves the marketing
+      404 page for the same paths.
+  - id: graphql
+    name: GraphQL
+    conforms: false
+    evidence: >-
+      /graphql returns 404 on api.voiceops.com. The application at
+      app.voiceops.com is built on tRPC (its module graph loads trpc-*.js), which
+      is an internal RPC transport with no public schema surface.
+  - id: asyncapi
+    name: AsyncAPI
+    conforms: false
+    evidence: No event, streaming, or webhook specification is published; not applicable.
+  - id: a2a
+    name: A2A Agent Card
+    conforms: false
+    evidence: >-
+      /.well-known/agent-card.json and /.well-known/agent.json return 404 on
+      voiceops.com, api.voiceops.com, clerk.voiceops.com and mcp.voiceops.com,
+      403 on app.voiceops.com. trust.voiceops.com returns 200 for both but with
+      the Vanta SPA HTML shell, which is rejected as a false positive.
+  - id: rfc9457
+    name: RFC 9457 Problem Details
+    conforms: false
+    evidence: >-
+      api.voiceops.com returns a Hapi/Boom envelope
+      {"statusCode","error","message"} with content-type application/json, not
+      application/problem+json. See errors/voiceops-problem-types.yml.
+  - id: soc2
+    name: SOC 2
+    conforms: claimed
+    evidence: >-
+      Claimed on the VoiceOps homepage ("SOC 2 · HIPAA · PCI DSS") and a
+      Vanta-hosted trust center exists at https://trust.voiceops.com/. No report,
+      attestation letter, type, or audit window is publicly retrievable.
+  - id: hipaa
+    name: HIPAA
+    conforms: claimed
+    evidence: Claimed on the VoiceOps homepage; no BAA or attestation published.
+  - id: pci-dss
+    name: PCI DSS
+    conforms: claimed
+    evidence: Claimed on the VoiceOps homepage; no AOC or level published.
+  - id: hsts
+    name: HTTP Strict Transport Security
+    conforms: true
+    evidence: >-
+      voiceops.com max-age=31536000; app.voiceops.com max-age=31536000;
+      includeSubDomains; api.voiceops.com max-age=15768000.

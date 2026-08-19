@@ -1,6 +1,6 @@
-generated: '2026-07-21'
+generated: '2026-08-14'
 method: searched
-source: live HTTP probes of voiceops.com + api.voiceops.com
+source: live HTTP probes of voiceops.com, api.voiceops.com, app.voiceops.com, clerk.voiceops.com, mcp.voiceops.com, trust.voiceops.com
 hosts:
   - host: https://voiceops.com
     documents:
@@ -10,9 +10,15 @@ hosts:
         status: 404
       - path: /.well-known/oauth-authorization-server
         status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
       - path: /.well-known/api-catalog
         status: 404
       - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
         status: 404
       - path: /llms.txt
         status: 404
@@ -22,11 +28,126 @@ hosts:
         status: 404
       - path: /.well-known/openid-configuration
         status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
       - path: /openapi.json
         status: 404
       - path: /swagger.json
         status: 404
+  - host: https://app.voiceops.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        content_type: text/plain
+        file: voiceops-security.txt
+        spec: RFC 9116
+        note: >-
+          Real RFC 9116 document (162 bytes, served from S3/CloudFront,
+          last-modified 2026-08-13). Contact mailto://engineering@voiceops.com,
+          Expires 2028-03-01, Canonical https://app.voiceops.com/.well-known/security.txt.
+          Note the Contact URI uses the non-standard "mailto://" form rather than
+          RFC 6068 "mailto:".
+      - path: /.well-known/openid-configuration
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/oauth-protected-resource
+        status: 403
+      - path: /.well-known/api-catalog
+        status: 403
+      - path: /.well-known/ai-plugin.json
+        status: 403
+      - path: /.well-known/agent-card.json
+        status: 403
+      - path: /.well-known/agent.json
+        status: 403
+  - host: https://clerk.voiceops.com
+    note: >-
+      VoiceOps-controlled subdomain CNAMEd to frontend-api.clerk.services — the
+      Clerk-hosted identity provider for the app.voiceops.com application
+      (confirmed in the app's own Content-Security-Policy connect-src). The
+      documents below are real OIDC/OAuth 2.0 discovery metadata whose issuer is
+      https://clerk.voiceops.com, so they describe VoiceOps' sign-in surface;
+      the scope vocabulary is Clerk's platform vocabulary, not a VoiceOps API
+      scope catalog.
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 200
+        content_type: application/json
+        file: voiceops-openid-configuration.json
+        spec: OpenID Connect Discovery 1.0
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        content_type: application/json
+        file: voiceops-oauth-authorization-server.json
+        spec: RFC 8414
+      - path: /.well-known/jwks.json
+        status: 200
+        content_type: application/json
+      - path: /.well-known/assetlinks.json
+        status: 200
+      - path: /.well-known/apple-app-site-association
+        status: 200
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+  - host: https://mcp.voiceops.com
+    note: >-
+      Live remote MCP server host (see mcp/voiceops-mcp.yml). It publishes no
+      /.well-known/ discovery surface at all — notably no
+      oauth-protected-resource, consistent with API-key rather than OAuth auth.
+    documents:
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/mcp.json
+        status: 404
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /health
+        status: 200
+        content_type: application/json
+  - host: https://trust.voiceops.com
+    rejected: true
+    note: >-
+      REJECTED AS A FALSE POSITIVE. Every /.well-known/* path on this host
+      returns HTTP 200 with the Vanta single-page-app HTML shell
+      (<!doctype html>, data-slugid g5bubu9n88g5aq1mcqumiv) — including
+      agent-card.json, agent.json, security.txt, openid-configuration and
+      api-catalog. This is an SPA catch-all, not a served document, so none of
+      it is counted as a discovery hit.
+    documents:
+      - path: /.well-known/agent-card.json
+        status: 200
+        content_type: text/html
+        counted: false
+      - path: /.well-known/security.txt
+        status: 200
+        content_type: text/html
+        counted: false
 notes: >-
-  No well-known discovery documents are published. api.voiceops.com is a live
-  API host (JSON 404 envelope, HSTS max-age=15768000) backing app.voiceops.com,
-  but it exposes no public discovery surface.
+  Round 2 (2026-08-14) upgrades the round 1 finding of "no well-known documents
+  at all". Two genuine surfaces were found on hosts VoiceOps controls: an
+  RFC 9116 security.txt on app.voiceops.com and RFC 8414 / OIDC Discovery
+  metadata on clerk.voiceops.com. Host ownership for app/api/mcp is confirmed by
+  a single Amazon-issued TLS certificate whose SANs are projectfrontline.net,
+  *.projectfrontline.net, app.voiceops.com, *.app.voiceops.com, api.voiceops.com
+  and mcp.voiceops.com.

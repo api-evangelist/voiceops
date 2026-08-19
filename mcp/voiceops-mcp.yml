@@ -1,0 +1,90 @@
+generated: '2026-08-14'
+method: probed
+status: published
+source: https://mcp.voiceops.com/mcp
+deployment:
+  mode: remote
+  endpoint: https://mcp.voiceops.com/mcp
+  auth: api-key
+  verified: probed
+server:
+  name: voiceops
+  transport: http
+  url: https://mcp.voiceops.com/mcp
+  protocol: JSON-RPC 2.0 over HTTP (streamable HTTP transport)
+tools: []
+tools_note: >-
+  tools/list is auth-gated and returned no tool set, so NO tools are recorded.
+  Nothing here is derived or guessed. An authenticated introspection with a
+  valid VoiceOps API key is required to enumerate the real tools and their
+  inputSchema. VoiceOps publishes no llms.txt and no developer documentation
+  from which a published tool list could be read instead.
+authentication:
+  scheme: Authorization header bearing a VoiceOps API key
+  oauth: false
+  oauth_evidence: >-
+    No WWW-Authenticate header is returned on the 401 and
+    /.well-known/oauth-protected-resource and
+    /.well-known/oauth-authorization-server both 404 on this host, so the server
+    does not implement the MCP OAuth authorization-server discovery flow. The
+    error text on a syntactically valid bearer token is "Invalid or unknown API
+    key", which names the credential type directly.
+  key_acquisition: >-
+    Not publicly documented. VoiceOps publishes no developer portal, signup, or
+    API-key issuance flow; keys are presumably issued to customers through the
+    app or the vendor.
+observed:
+  cors:
+    access_control_allow_origin: '*'
+    access_control_allow_methods: [GET, POST, DELETE, OPTIONS]
+    access_control_allow_headers: [Content-Type, Mcp-Session-Id, Authorization]
+    access_control_expose_headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Mcp-Session-Id]
+  session_header: Mcp-Session-Id
+  health_endpoint: https://mcp.voiceops.com/health
+  health_body: '{"status":"ok"}'
+  paths_probed:
+    - {path: /mcp, method: POST, status: 401}
+    - {path: /mcp, method: GET, status: 401}
+    - {path: /health, method: GET, status: 200}
+    - {path: /, method: GET, status: 404}
+    - {path: /sse, method: POST, status: 404}
+    - {path: /message, method: POST, status: 404}
+    - {path: /v1/mcp, method: POST, status: 404}
+    - {path: /api/mcp, method: POST, status: 404}
+ownership:
+  verified: true
+  evidence: >-
+    mcp.voiceops.com resolves to four dedicated AWS IPs (a control probe of a
+    nonexistent subdomain on voiceops.com resolves to nothing, so this is not a
+    wildcard), and its TLS certificate (Amazon RSA 2048 M01, valid
+    2026-07-12 to 2027-01-25) carries SANs projectfrontline.net,
+    *.projectfrontline.net, app.voiceops.com, *.app.voiceops.com,
+    api.voiceops.com and mcp.voiceops.com — the same certificate that fronts the
+    VoiceOps application and API hosts.
+x-evidence:
+  - fetched: '2026-08-14'
+    url: https://mcp.voiceops.com/mcp
+    method: POST
+    request: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    body: '{"jsonrpc":"2.0","id":null,"error":{"code":-32000,"message":"Missing Authorization header"}}'
+  - fetched: '2026-08-14'
+    url: https://mcp.voiceops.com/mcp
+    method: POST
+    request: 'tools/list with Authorization: Bearer <invalid>'
+    http_status: 401
+    body: '{"jsonrpc":"2.0","id":null,"error":{"code":-32000,"message":"Invalid or unknown API key"}}'
+  - fetched: '2026-08-14'
+    url: https://mcp.voiceops.com/health
+    http_status: 200
+    body: '{"status":"ok"}'
+notes: >-
+  This is a real, live, first-party remote MCP server operated by VoiceOps, and
+  it is entirely undocumented on the public web — it appears nowhere on
+  voiceops.com, in the sitemap, in any MCP registry, or in search results. It
+  was found by direct host probing, not from documentation. VoiceOps therefore
+  ships an agent surface that an agent can reach today but cannot discover:
+  there is no docs page, no llms.txt, no /.well-known/mcp.json, no
+  oauth-protected-resource, and no published way to obtain the API key the
+  server requires. Round 1 (2026-07-21) concluded the company had no API
+  surface; that is now superseded.

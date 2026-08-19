@@ -1,0 +1,70 @@
+generated: '2026-08-14'
+method: probed
+source: >-
+  live probes of https://mcp.voiceops.com/mcp,
+  https://clerk.voiceops.com/.well-known/openid-configuration and
+  https://clerk.voiceops.com/.well-known/oauth-authorization-server
+docs: null
+docs_note: >-
+  VoiceOps publishes no authentication documentation. There is no developer
+  portal, no API reference, and no OpenAPI from which securitySchemes could be
+  derived, so this profile is assembled entirely from observed behaviour of the
+  live hosts.
+summary:
+  types: [apiKey, oauth2, openIdConnect]
+  api_key_in: [header]
+  oauth2_flows: [authorizationCode]
+schemes:
+  - name: mcpApiKey
+    type: apiKey
+    in: header
+    parameter_name: Authorization
+    applies_to: https://mcp.voiceops.com/mcp
+    sources: [probe]
+    description: >-
+      The remote MCP server requires an Authorization header carrying a VoiceOps
+      API key. Omitting it returns JSON-RPC error -32000 "Missing Authorization
+      header"; a syntactically valid but unknown bearer token returns -32000
+      "Invalid or unknown API key". The key format, issuance flow and rotation
+      policy are not published.
+  - name: clerkOpenIdConnect
+    type: openIdConnect
+    openIdConnectUrl: https://clerk.voiceops.com/.well-known/openid-configuration
+    applies_to: https://app.voiceops.com
+    sources: [well-known/voiceops-openid-configuration.json]
+    description: >-
+      End-user sign-in for the VoiceOps application is an OpenID Connect
+      provider hosted on the VoiceOps subdomain clerk.voiceops.com (CNAME to
+      frontend-api.clerk.services). This is the application login, not an API
+      authorization surface for third-party developers.
+    issuer: https://clerk.voiceops.com
+    id_token_signing_alg_values_supported: [RS256]
+    jwks_uri: https://clerk.voiceops.com/.well-known/jwks.json
+  - name: clerkOAuth2
+    type: oauth2
+    applies_to: https://app.voiceops.com
+    sources: [well-known/voiceops-oauth-authorization-server.json]
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://clerk.voiceops.com/oauth/authorize
+        tokenUrl: https://clerk.voiceops.com/oauth/token
+        revocationUrl: https://clerk.voiceops.com/oauth/token/revoke
+        introspectionUrl: https://clerk.voiceops.com/oauth/token_info
+        userinfoUrl: https://clerk.voiceops.com/oauth/userinfo
+        refresh_supported: true
+        pkce: [S256]
+        token_endpoint_auth_methods: [client_secret_basic, client_secret_post, none]
+        scope_count: 6
+    description: >-
+      RFC 8414 authorization-server metadata is served for the VoiceOps issuer.
+      See scopes/voiceops-scopes.yml — the scope vocabulary is Clerk's standard
+      scoped-access vocabulary, not a VoiceOps business-capability scope
+      catalog.
+gaps:
+  - No documented way for a developer to obtain an API key.
+  - No published token lifetime, rotation, or revocation guidance for the MCP API key.
+  - The MCP server does not advertise /.well-known/oauth-protected-resource, so an
+    MCP client cannot discover its authorization server automatically.
+  - api.voiceops.com returns HTTP 404 with a JSON envelope on every anonymous path
+    probed, and never issues a 401 challenge, so its authentication model could not
+    be observed at all.
