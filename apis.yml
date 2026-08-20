@@ -48,6 +48,17 @@ tags:
 - Customer Experience
 - Artificial Intelligence
 - Speech Analytics
+- MCP
+- Agents
+tags_raw:
+- Company
+- Ai Apps
+- Conversation Intelligence
+- Call Centers
+- Sales Coaching
+- Customer Experience
+- Artificial Intelligence
+- Speech Analytics
 - Model Context Protocol
 - Agents
 apis:
@@ -64,6 +75,10 @@ apis:
   humanURL: https://www.voiceops.com/
   baseURL: https://mcp.voiceops.com/mcp
   tags:
+  - MCP
+  - Agents
+  - Conversation Intelligence
+  tags_raw:
   - Model Context Protocol
   - Agents
   - Conversation Intelligence
