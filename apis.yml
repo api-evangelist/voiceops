@@ -16,6 +16,17 @@ description: >-
   Integration API and Reporting API knowledge base is offline, and the live
   api.voiceops.com host backs the app.voiceops.com application.
 url: https://raw.githubusercontent.com/api-evangelist/voiceops/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: sales-led
   onboarding: demo-request
